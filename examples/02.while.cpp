@@ -1,3 +1,7 @@
+/*
+ *by @MCSH
+ */
+
 #include "basic.hpp"
 
 int main()
