@@ -1,2 +1,3 @@
 *.o
 *Â~
+examples/basic.hpp
