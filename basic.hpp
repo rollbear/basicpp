@@ -112,8 +112,4 @@ namespace basic {
          }                                                               \
        }
 
-#define BEGIN {
-
-#define END }
-
 } // namespace basic
