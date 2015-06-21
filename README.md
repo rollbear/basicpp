@@ -67,7 +67,6 @@ int main()
 ```
 
 ## Limitations
-* Only numeric variables are supported (no strings, no matrices)
 * C++11 or later (easy to back-port, but why?)
 * Those pesky semicolons...
 * Variables must be defined prior to use
