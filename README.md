@@ -6,6 +6,18 @@ Single header **`BASIC`** emulation in **`C++`**. This is based on my
 [Colour Genie](https://en.wikipedia.org/wiki/Colour_Genie) computer I
 got on my 15th birthday.
 
+## Versions
+
+* [Original BASIC](#basic) - AKA Dartmouth BASIC
+* [Structured BASIC] (#sbasic)
+
+
+
+## Basic
+*Original BASIC - AKA Dartmouth BASIC*
+
+Header file: [basic.hpp](./basic.hpp) 
+
 ### Example program:
 ```Cpp
 #include "basic.hpp"
@@ -29,7 +41,32 @@ int main()
 }
 ```
 
-### Limitations
+## SBASIC
+*Structured BASIC - AKA SBASIC*
+
+Header file: [structured_basic.hpp](./structured_basic.hpp)
+
+### Example program:
+```Cpp
+#include "structured_basic.hpp"
+
+int main()
+{
+	_10: LET X = 1;
+	_20: INPUT "enter a positive number: " , X;
+	_30: IF X > 0 THEN GOTO _60; 
+	_40: PRINT "Positive means greater than 0";
+	_50: GOTO _20;
+	_60: LET i = 0;
+	_70: DO ;
+	_80: PRINT i+1, " Basic is awesome";
+	_90: i = i + 1 ;
+	_100: ;LOOP WHILE ( i < X );
+
+}
+```
+
+## Limitations
 * Only numeric variables are supported (no strings, no matrices)
 * C++11 or later (easy to back-port, but why?)
 * Those pesky semicolons...
