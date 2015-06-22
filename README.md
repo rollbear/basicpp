@@ -16,7 +16,7 @@ got on my 15th birthday.
 ## Basic
 *Original BASIC - AKA Dartmouth BASIC*
 
-Header file: [basic.hpp](blob/master/basic.hpp) 
+Header file: [basic.hpp](../basic.hpp) 
 
 ### Example program:
 ```Cpp
@@ -44,7 +44,7 @@ int main()
 ## SBASIC
 *Structured BASIC - AKA SBASIC*
 
-Header file: [structured_basic.hpp](blob/master/structured_basic.hpp)
+Header file: [structured_basic.hpp](../structured_basic.hpp)
 
 ### Example program:
 ```Cpp
