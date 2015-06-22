@@ -5,6 +5,8 @@
 //
 // For license information, please refer to <http://unlicense.org>
 //
+// Modified by Sajjad 'MCSH' Heydari (MCSHemail@gmail.com)
+
 
 #include <setjmp.h>
 #include <stdlib.h>
@@ -80,7 +82,6 @@ namespace basic {
       return *this;
     }
   };
-
 #define INPUT basic::input(),
 #define PRINT basic::printer(),
 #define IF if (
@@ -100,7 +101,6 @@ namespace basic {
                  double const for_loop_endval=
 #define STEP ;              \
              for_loop_step=
-
 #define NEXT for_loop_variable+=for_loop_step;                           \
              for_loop_exit=(  (   for_loop_step > 0                      \
                                && for_loop_variable > for_loop_endval)   \
@@ -111,13 +111,10 @@ namespace basic {
            }                                                             \
          }                                                               \
        }
-
 #define DO do{
-
 #define LOOP }
 #define UNTIL while
 #define WHILE while
-
 #define OR ||
 #define AND &&
 

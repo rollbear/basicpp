@@ -2,7 +2,7 @@
  *by @MCSH
  */
 
-#include "basic.hpp"
+#include "structurd_basic.hpp"
 
 int main()
 {
