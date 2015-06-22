@@ -112,4 +112,13 @@ namespace basic {
          }                                                               \
        }
 
+#define DO do{
+
+#define LOOP }
+#define UNTIL while
+#define WHILE while
+
+#define OR ||
+#define AND &&
+
 } // namespace basic
