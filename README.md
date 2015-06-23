@@ -24,21 +24,26 @@ Header file: [basic.hpp](./basic.hpp)
 
 int main()
 {
-  _10: LET X = 1;
+  _10: LET COUNT = 1;
   _20: LET SUM = 0;
-  _30: LET DEPTH$ = "";
-  _40: INPUT "Enter a positive number: ", X;
-  _50: IF X > 0 THEN GOTO _80;
-  _60: PRINT "By positive, I mean greater than zero. You entered ", X, " which isn't";
-  _70: GOTO _40;
-  _80: GOSUB _110;
-  _90: PRINT "SUM=", SUM, " DEPTH=", DEPTH$;
- _100: END;
- _110: SUM = SUM + X;
- _120: X = X - 1;
- _130: IF X > 0 THEN GOSUB _110;
- _140: DEPTH$ = DEPTH$ + ".";
- _150: RETURN;
+  _30: LET STACK$ = ".";
+  _40: LET TRY = 0;
+  _50: FOR TRY = 3 TO 1 STEP -1;
+  _60: PRINT "You have ", TRY, " chances to get this right: ";
+  _70: INPUT "Enter a positive number ", COUNT;
+  _80: IF COUNT > 0 THEN GOTO _130;
+  _90:  PRINT "I said positive. ", COUNT, " isn't";
+ _100: NEXT;
+ _110: PRINT "I give up on you!";
+ _120: END;
+ _130: GOSUB _160;
+ _140: PRINT "SUM=", SUM, " STACK=", STACK$;
+ _150: END;
+ _160: SUM = SUM + COUNT;
+ _170: COUNT = COUNT - 1;
+ _180: IF COUNT > 0 THEN GOSUB _160;
+ _190: STACK$ = STACK$ + STACK$;
+ _200: RETURN;
 }
 ```
 

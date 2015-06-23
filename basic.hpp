@@ -262,6 +262,8 @@ namespace basic {
          }                                                               \
        }
 
+#define END exit(0)
+
 #define VAL(x) x.toNum()
 #define STR(x) x.toString()
 #define END exit(0)
