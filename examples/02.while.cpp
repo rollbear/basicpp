@@ -2,7 +2,7 @@
  *by @MCSH
  */
 
-#include "structurd_basic.hpp"
+#include "structured_basic.hpp"
 
 int main()
 {
@@ -15,6 +15,6 @@ int main()
 	_70: DO ;
 	_80: PRINT i+1, " Basic is awesome";
 	_90: i = i + 1 ;
-	_100: ;LOOP WHILE ( i < X );
+	_100:  LOOP WHILE ( i < X );
 
 }
