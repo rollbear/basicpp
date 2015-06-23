@@ -264,5 +264,5 @@ namespace basic {
 
 #define VAL(x) x.toNum()
 #define STR(x) x.toString()
-
+#define END exit(0)
 } // namespace basic
