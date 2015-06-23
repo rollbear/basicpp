@@ -53,7 +53,7 @@ namespace basic {
       : isnum(true),
         numval(_numval)
     {}
-      
+
     variant(const std::string _strval)
       : isnum(false),
         strval(_strval)
@@ -63,7 +63,7 @@ namespace basic {
       : isnum(false),
         strval(_strval)
     {}
-      
+
     variant toString() const {
       if (isnum)
         return variant(std::to_string(numval));
@@ -77,7 +77,7 @@ namespace basic {
       else
         return *this;
     }
-      
+
     variant &operator=(const variant &copyfrom) {
       isnum = copyfrom.isnum;
       numval = copyfrom.numval;
@@ -96,11 +96,11 @@ namespace basic {
       strval = _strval;
       return *this;
     }
-    
+
     variant operator+(const variant op) const {
       if (isnum != op.isnum)
         type_mismatch();
-      
+
       if (isnum)
         return variant(numval + op.numval);
       else
@@ -200,16 +200,16 @@ namespace basic {
       std::cout  << s;
       return *this;
     }
-    
+
     const printer &operator,(const variant &v) const {
       if (v.isnum)
         std::cout << v.numval;
       else
         std::cout << v.strval;
-      
+
       return *this;
     }
-    
+
     ~printer() { std::cout << std::endl; }
   };
 
