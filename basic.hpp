@@ -1,5 +1,6 @@
 //
 // Originally written by BjÃrn Fahller (bjorn@fahller.se)
+// Modified by Jeff Bush
 //
 // No rights claimed. The sources are released to the public domain
 //
@@ -35,35 +36,180 @@ namespace basic {
     static char const *str() { return ","; }
   };
 
-  template <typename T>
-  class printer_h
+  void type_mismatch() {
+    std::cout << "Type mismatch error\n";
+    exit(1);
+  }
+
+  class variant
   {
-    using str = char const *;
   public:
-    printer_h<str> operator,(str s) {
-      std::cout << separator<T, str>::str() << s;
-      return printer_h<str>();
+    variant(double _numval)
+      : isnum(true),
+        numval(_numval)
+    {}
+
+    variant(int _numval)
+      : isnum(true),
+        numval(_numval)
+    {}
+      
+    variant(const std::string _strval)
+      : isnum(false),
+        strval(_strval)
+    {}
+
+    variant(const char *_strval)
+      : isnum(false),
+        strval(_strval)
+    {}
+      
+    variant toString() const {
+      if (isnum)
+        return variant(std::to_string(numval));
+      else
+        return *this;
     }
-    template <typename U>
-    printer_h<U> operator,(U const& u) const {
-      std::cout << separator<T,U>::str() << u;
-      return printer_h<U>();
+
+    variant toNum() const {
+      if (!isnum)
+        return variant(stod(strval));
+      else
+        return *this;
     }
+      
+    variant &operator=(const variant &copyfrom) {
+      isnum = copyfrom.isnum;
+      numval = copyfrom.numval;
+      strval = copyfrom.strval;
+      return *this;
+    }
+
+    variant &operator=(double newval) {
+      isnum = true;
+      numval = newval;
+      return *this;
+    }
+
+    variant &operator=(const char *_strval) {
+      isnum = false;
+      strval = _strval;
+      return *this;
+    }
+    
+    variant operator+(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+      
+      if (isnum)
+        return variant(numval + op.numval);
+      else
+        return variant(strval + op.strval);
+    }
+
+    variant operator-(const variant op) const {
+      if (!isnum || !op.isnum)
+        type_mismatch();
+
+      return variant(numval - op.numval);
+    }
+
+    variant operator*(const variant op) const {
+      if (!isnum || !op.isnum)
+        type_mismatch();
+
+      return variant(numval * op.numval);
+    }
+
+    variant operator/(const variant op) const {
+      if (!isnum || !op.isnum)
+        type_mismatch();
+
+      return variant(numval / op.numval);
+    }
+
+    bool operator>(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval > op.numval;
+      else
+        return strval > op.strval;
+    }
+
+    bool operator>=(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval >= op.numval;
+      else
+        return strval >= op.strval;
+    }
+
+    bool operator<(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval < op.numval;
+      else
+        return strval < op.strval;
+    }
+
+    bool operator<=(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval <= op.numval;
+      else
+        return strval <= op.strval;
+    }
+
+    bool operator!=(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval != op.numval;
+      else
+        return strval != op.strval;
+    }
+
+    bool operator==(const variant op) const {
+      if (isnum != op.isnum)
+        type_mismatch();
+
+      if (isnum)
+        return numval == op.numval;
+      else
+        return strval == op.strval;
+    }
+
+    bool isnum;
+    double numval;
+    std::string strval;
   };
 
   class printer
   {
-    using str = char const;
-  public:
-    printer_h<str> operator,(str s) {
+    public:
+    printer &operator,(const char *s) {
       std::cout  << s;
-      return printer_h<str>();
+      return *this;
     }
-    template <typename T>
-    printer_h<T> operator,(T const& t) const {
-      std::cout << t;
-      return printer_h<T>();
+    
+    const printer &operator,(const variant &v) const {
+      if (v.isnum)
+        std::cout << v.numval;
+      else
+        std::cout << v.strval;
+      
+      return *this;
     }
+    
     ~printer() { std::cout << std::endl; }
   };
 
@@ -74,9 +220,13 @@ namespace basic {
       std::cout << s << std::flush;
       return *this;
     }
-    template <typename T>
-    input& operator,(T& t) {
-      std::cin >> t;
+
+    input& operator,(variant& v) {
+      if (v.isnum)
+        std::cin >> v.numval;
+      else
+        std::cin >> v.strval;
+
       return *this;
     }
   };
@@ -85,23 +235,23 @@ namespace basic {
 #define PRINT basic::printer(),
 #define IF if (
 #define THEN )
-#define LET double
+#define LET basic::variant
 #define GOTO goto
-#define FOR { double& for_loop_variable =
+#define FOR { basic::variant& for_loop_variable =
 #define TO ;                                   \
            {                                   \
              jmp_buf for_loop_top;             \
-             bool for_loop_exit = 0;           \
+             bool for_loop_exit = false;           \
              while (!for_loop_exit)            \
              {                                 \
                if (setjmp(for_loop_top) == 0)  \
                {                               \
-                 double for_loop_step=1;       \
-                 double const for_loop_endval=
+                 basic::variant for_loop_step=1;       \
+                 basic::variant const for_loop_endval=
 #define STEP ;              \
              for_loop_step=
 
-#define NEXT for_loop_variable+=for_loop_step;                           \
+#define NEXT for_loop_variable=for_loop_variable+for_loop_step;                           \
              for_loop_exit=(  (   for_loop_step > 0                      \
                                && for_loop_variable > for_loop_endval)   \
                             ||(   for_loop_step < 0                      \
@@ -111,5 +261,8 @@ namespace basic {
            }                                                             \
          }                                                               \
        }
+
+#define VAL(x) x.toNum()
+#define STR(x) x.toString()
 
 } // namespace basic
