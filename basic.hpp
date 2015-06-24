@@ -85,16 +85,34 @@ namespace basic {
       return *this;
     }
 
-    variant &operator=(double newval) {
-      isnum = true;
-      numval = newval;
-      return *this;
+    // Note that strings in BASIC are 1 based, so subtract 1 from the left
+    // index
+    variant midStr(const variant &left, const variant &right) const {
+      if (isnum || !left.isnum || !right.isnum)
+        type_mismatch();
+
+      return variant(strval.substr(int(left.numval) - 1, (int(right.numval) - int(left.numval) + 1)));
     }
 
-    variant &operator=(const char *_strval) {
-      isnum = false;
-      strval = _strval;
-      return *this;
+    variant leftStr(const variant &count) const {
+      if (isnum)
+        type_mismatch();
+
+      return variant(strval.substr(0, int(count.numval)));
+    }
+
+    variant rightStr(const variant &count) const {
+      if (isnum)
+        type_mismatch();
+
+      return variant(strval.substr(strval.length() - int(count.numval) - 1, int(count.numval)));
+    }
+
+    variant strlen() const {
+      if (isnum)
+        type_mismatch();
+
+      return variant((int)strval.length());
     }
 
     variant operator+(const variant op) const {
@@ -267,4 +285,9 @@ namespace basic {
 #define VAL(x) x.toNum()
 #define STR(x) x.toString()
 #define END exit(0)
+#define MID$(str, left, right) str.midStr(left, right)
+#define LEFT$(str, count) str.leftStr(count)
+#define RIGHT$(str, count) str.rightStr(count)	
+#define LEN(str) str.strlen()
+
 } // namespace basic
