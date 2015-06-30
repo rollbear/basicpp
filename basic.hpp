@@ -40,10 +40,20 @@ namespace basic {
     std::cout << "Type mismatch error\n";
     exit(1);
   }
+  
+  void array_out_of_bounds() {
+    std::cout << "Array out of bounds error\n";
+    exit(1);
+  }
 
   class variant
   {
   public:
+    variant()
+      : isnum(true),
+        numval(0)
+    {}
+    
     variant(double _numval)
       : isnum(true),
         numval(_numval)
@@ -211,6 +221,29 @@ namespace basic {
     std::string strval;
   };
 
+  class array
+  {
+  public:
+    array(int _size)
+      : size(_size),
+        elements(new variant[_size])
+    {}
+
+    variant& operator()(const variant &indexvar) {
+      if (!indexvar.isnum)
+        type_mismatch();
+
+      int index = indexvar.numval - 1;
+      if (index < 0 || index >= size)
+        array_out_of_bounds();
+      
+      return elements[index];
+    }
+  private:
+    variant *elements;
+    int size;
+  };
+
   class printer
   {
     public:
@@ -284,10 +317,11 @@ namespace basic {
 
 #define VAL(x) x.toNum()
 #define STR(x) x.toString()
-#define END exit(0)
 #define MID$(str, left, right) str.midStr(left, right)
 #define LEFT$(str, count) str.leftStr(count)
 #define RIGHT$(str, count) str.rightStr(count)	
 #define LEN(str) str.strlen()
+#define DIM basic::array 
+#define RND(x) (double) (rand() & 0xffff);
 
 } // namespace basic
