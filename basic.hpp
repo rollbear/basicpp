@@ -40,7 +40,7 @@ namespace basic {
     std::cout << "Type mismatch error\n";
     exit(1);
   }
-  
+
   void array_out_of_bounds() {
     std::cout << "Array out of bounds error\n";
     exit(1);
@@ -53,7 +53,7 @@ namespace basic {
       : isnum(true),
         numval(0)
     {}
-    
+
     variant(double _numval)
       : isnum(true),
         numval(_numval)
@@ -236,7 +236,7 @@ namespace basic {
       int index = indexvar.numval - 1;
       if (index < 0 || index >= size)
         array_out_of_bounds();
-      
+
       return elements[index];
     }
   private:
@@ -314,14 +314,13 @@ namespace basic {
        }
 
 #define END exit(0)
-
 #define VAL(x) x.toNum()
 #define STR(x) x.toString()
 #define MID$(str, left, right) str.midStr(left, right)
 #define LEFT$(str, count) str.leftStr(count)
-#define RIGHT$(str, count) str.rightStr(count)	
+#define RIGHT$(str, count) str.rightStr(count)
 #define LEN(str) str.strlen()
-#define DIM basic::array 
+#define DIM basic::array
 #define RND(x) (double) (rand() & 0xffff);
 
 } // namespace basic
