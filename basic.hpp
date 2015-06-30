@@ -12,6 +12,7 @@
 #include <iostream>
 #include <ostream>
 #include <forward_list>
+#include <vector>
 
 namespace basic {
   struct stack_frame { jmp_buf buf; };
@@ -225,8 +226,7 @@ namespace basic {
   {
   public:
     array(int _size)
-      : size(_size),
-        elements(new variant[_size])
+      : elements(_size)
     {}
 
     variant& operator()(const variant &indexvar) {
@@ -234,14 +234,13 @@ namespace basic {
         type_mismatch();
 
       int index = indexvar.numval - 1;
-      if (index < 0 || index >= size)
+      if (index < 0 || index >= elements.size())
         array_out_of_bounds();
 
       return elements[index];
     }
   private:
-    variant *elements;
-    int size;
+    std::vector<variant> elements;
   };
 
   class printer
