@@ -53,6 +53,11 @@ namespace basic {
     exit(1);
   }
 
+  void illegal_quantity_error() {
+    std::cout << "Illegal quantity error\n";
+    exit(1);
+  }
+  
   class variant
   {
   public:
@@ -87,6 +92,11 @@ namespace basic {
       return numval;
     }
 
+    std::string string() const {
+      if (isnum)
+        type_mismatch();
+      return strval;
+    }
     variant toString() const {
       if (isnum)
         return variant(std::to_string(numval));
@@ -335,6 +345,28 @@ namespace basic {
     }
   };
 
+  template <typename T>
+  variant to_char_str(T const& t)
+  {
+    auto n = numeric_value(t);
+    char a[] = { char(n), '\0' };
+    return variant{a};
+  }
+
+  template <std::size_t N>
+  inline variant to_asc_val(char const (&a)[N])
+  {
+    if (N < 2) illegal_quantity_error();
+    return variant(double(a[0]));
+  }
+
+  inline variant to_asc_val(variant const& v)
+  {
+    auto s = v.string();
+    if (s.empty()) illegal_quantity_error();
+    return variant(double(s[0]));
+  }
+
 #define INPUT basic::input(),
 #define PRINT basic::printer(),
 #define IF if (
@@ -375,5 +407,6 @@ namespace basic {
 #define LEN(str) str.strlen()
 #define DIM basic::array
 #define RND(x) (double) (rand() & 0xffff);
-
+#define CHR$(num) basic::to_char_str(num)
+#define ASC(str) basic::to_asc_val(str)
 } // namespace basic
