@@ -13,6 +13,7 @@
 #include <ostream>
 #include <forward_list>
 #include <vector>
+#include <algorithm>
 
 namespace basic {
   struct stack_frame { jmp_buf buf; };
@@ -47,6 +48,11 @@ namespace basic {
     exit(1);
   }
 
+  void dimension_error() {
+    std::cout << "Array Dimension error\n";
+    exit(1);
+  }
+
   class variant
   {
   public:
@@ -74,6 +80,12 @@ namespace basic {
       : isnum(false),
         strval(_strval)
     {}
+
+    double numeric() const {
+      if (!isnum)
+        type_mismatch();
+      return numval;
+    }
 
     variant toString() const {
       if (isnum)
@@ -222,24 +234,66 @@ namespace basic {
     std::string strval;
   };
 
+  template <typename T>
+  struct is_dimmable
+  {
+    using DT = typename std::decay<T>::type;
+    static constexpr bool value = std::is_integral<DT>::value || std::is_same<DT, variant>::value;
+  };
+
+  template <template <typename> class pred, typename ... T>
+  struct all_are
+  {
+    static constexpr bool value = true;
+  };
+
+  template <template <typename> class pred, typename H, typename ... T>
+  struct all_are<pred, H, T...>
+  {
+    static constexpr bool value = pred<H>::value && all_are<pred, T...>::value;
+  };
+
+  template <typename T>
+  T numeric_value(T t) { return t; }
+
+  inline
+  long numeric_value(const variant& v) { return long(v.numeric()); }
+
   class array
   {
   public:
-    array(int _size)
-      : elements(_size)
+    template <typename ... T, typename = typename std::enable_if<all_are<is_dimmable, T...>::value>::type>
+    array(T const & ... t)
+      : dimensions{1LU+numeric_value(t)..., 1LU},
+        elements(std::accumulate(std::begin(dimensions),
+                                 std::end(dimensions),
+                                 1U,
+                                 [](std::size_t i, std::size_t j){ return i*j;}))
     {}
 
-    variant& operator()(const variant &indexvar) {
-      if (!indexvar.isnum)
-        type_mismatch();
+    template <typename ... T>
+    typename std::enable_if<all_are<is_dimmable, T...>::value, variant&>::type
+    operator()(T const& ... t) {
+      if (sizeof...(t) != dimensions.size() - 1)
+        dimension_error();
 
-      int index = indexvar.numval - 1;
-      if (index < 0 || index >= elements.size())
-        array_out_of_bounds();
+      long indexes[] { long(numeric_value(t))... };
 
-      return elements[index];
+      auto i = sizeof...(t);
+      size_t mul = 1U;
+      size_t idx = 0U;
+      while (i--)
+      {
+        if (indexes[i] < 0 || indexes[i] >= dimensions[i])
+          array_out_of_bounds();
+        idx += indexes[i]*mul;
+        mul = dimensions[i];
+      }
+
+      return elements[idx];
     }
   private:
+    std::vector<std::size_t> dimensions;
     std::vector<variant> elements;
   };
 
