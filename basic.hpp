@@ -245,6 +245,41 @@ namespace basic {
   };
 
   template <typename T>
+  typename std::enable_if<std::is_constructible<variant, T>::value && !std::is_same<typename std::decay<T>::type, variant>::value, variant>::type
+  operator+(T&& t, variant const& p)
+  {
+    return variant(std::forward<T>(t)) + p;
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_constructible<variant, T>::value && !std::is_same<typename std::decay<T>::type, variant>::value, variant>::type
+  operator-(T&& t, variant const& p)
+  {
+    return variant(std::forward<T>(t)) - p;
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_constructible<variant, T>::value && !std::is_same<typename std::decay<T>::type, variant>::value, variant>::type
+  operator*(T&& t, variant const& p)
+  {
+    return variant(std::forward<T>(t)) * p;
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_constructible<variant, T>::value && !std::is_same<typename std::decay<T>::type, variant>::value, variant>::type
+  operator/(T&& t, variant const& p)
+  {
+    return variant(std::forward<T>(t)) / p;
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_constructible<variant, T>::value && !std::is_same<typename std::decay<T>::type, variant>::value, bool>::type
+  operator==(T&& t, variant const& p)
+  {
+    return variant(std::forward<T>(t)) == p;
+  }
+
+  template <typename T>
   struct is_dimmable
   {
     using DT = typename std::decay<T>::type;
