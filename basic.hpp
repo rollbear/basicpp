@@ -38,26 +38,26 @@ namespace basic {
     static char const *str() { return ","; }
   };
 
-  void type_mismatch() {
+  inline void type_mismatch() {
     std::cout << "Type mismatch error\n";
     exit(1);
   }
 
-  void array_out_of_bounds() {
+  inline void array_out_of_bounds() {
     std::cout << "Array out of bounds error\n";
     exit(1);
   }
 
-  void dimension_error() {
+  inline void dimension_error() {
     std::cout << "Array Dimension error\n";
     exit(1);
   }
 
-  void illegal_quantity_error() {
+  inline void illegal_quantity_error() {
     std::cout << "Illegal quantity error\n";
     exit(1);
   }
-  
+
   class variant
   {
   public:
