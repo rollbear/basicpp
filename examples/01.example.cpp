@@ -10,7 +10,7 @@ int main()
   _60: PRINT "You have ", TRY, " chances to get this right: ";
   _70: INPUT "Enter a positive number ", COUNT;
   _80: IF COUNT > 0 THEN GOTO _130;
-  _90:  PRINT "I said positive. ", COUNT, " isn't";
+  _90: PRINT "I said positive. ", COUNT, " isn't";
  _100: NEXT;
  _110: PRINT "I give up on you!";
  _120: END;
