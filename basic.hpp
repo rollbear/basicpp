@@ -110,7 +110,6 @@ namespace basic {
       else
         return *this;
     }
-
     variant &operator=(const variant &copyfrom) {
       isnum = copyfrom.isnum;
       numval = copyfrom.numval;
@@ -442,6 +441,7 @@ namespace basic {
 #define LEN(str) str.strlen()
 #define DIM basic::array
 #define RND(x) ((rand() & 0xffff)/65535.0)
+#define INT(x) static_cast<int>(basic::numeric_value(x))
 #define CHR$(num) basic::to_char_str(num)
 #define ASC(str) basic::to_asc_val(str)
 } // namespace basic
