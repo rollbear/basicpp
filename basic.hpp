@@ -441,7 +441,7 @@ namespace basic {
 #define RIGHT$(str, count) str.rightStr(count)
 #define LEN(str) str.strlen()
 #define DIM basic::array
-#define RND(x) (double) (rand() & 0xffff)
+#define RND(x) ((rand() & 0xffff)/65535.0)
 #define CHR$(num) basic::to_char_str(num)
 #define ASC(str) basic::to_asc_val(str)
 } // namespace basic
