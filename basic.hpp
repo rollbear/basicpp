@@ -350,7 +350,7 @@ namespace basic {
       return *this;
     }
 
-    const printer &operator,(const variant &v) const {
+    printer &operator,(const variant &v) {
       if (v.isnum)
         std::cout << v.numval;
       else
