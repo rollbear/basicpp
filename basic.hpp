@@ -1,5 +1,5 @@
 //
-// Originally written by BjÃrn Fahller (bjorn@fahller.se)
+// Originally written by Björn Fahller (bjorn@fahller.se)
 // Modified by Jeff Bush
 //
 // No rights claimed. The sources are released to the public domain
@@ -14,6 +14,7 @@
 #include <forward_list>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 
 namespace basic {
   struct stack_frame { jmp_buf buf; };
