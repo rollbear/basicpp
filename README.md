@@ -1,4 +1,4 @@
-## **`C++`** today is as simple as **`BASIC`** was in the 80s
+## **`C++`**is as simple as **`BASIC`** was in the 80s 
 
 Single header **`BASIC`** emulation in **`C++`**. This is based on my
 (flawed) memory of the **`BASIC`** dialect in the
